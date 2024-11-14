@@ -2,7 +2,7 @@ const express = require("express");
 const axios = require("axios");
 const app = express();
 const port = process.env.PORT || 3001;
-const API_KEY = process.env.API_KEY; // Ganti dengan API key kamu
+const API_KEY = process.env.API_KEY;
 
 app.get("/weather", async (req, res) => {
   const { lat, lon } = req.query;
@@ -32,17 +32,18 @@ app.get("/weather", async (req, res) => {
 
     const data = response.data;
 
-    // Ambil data yang diperlukan
+    // Ambil data
     const weatherInfo = {
-      location: data.name, // Nama lokasi
-      weather: data.weather[0].main, // Cuaca (misal: Clear, Rain, Cloud)
-      description: data.weather[0].description, // Deskripsi cuaca
-      icon: `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`, // URL untuk ikon cuaca
-      temperature: data.main.temp, // Suhu dalam Celsius
-      cloudiness: data.clouds.all, // Persentase awan
+      location: data.name,
+      weather: data.weather[0].main,
+      description: data.weather[0].description,
+      icon: `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`,
+      temperature: data.main.temp,
+      cloudiness: data.clouds.all,
     };
 
-    res.json(weatherInfo); // Mengirimkan data cuaca sebagai respons
+    // Mengirimkan data cuaca sebagai respons json
+    res.json(weatherInfo);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch weather data" });
   }
