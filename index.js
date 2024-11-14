@@ -1,7 +1,7 @@
 const express = require("express");
 const axios = require("axios");
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 const API_KEY = process.env.API_KEY; // Ganti dengan API key kamu
 
 app.get("/weather", async (req, res) => {
@@ -18,13 +18,17 @@ app.get("/weather", async (req, res) => {
       `https://api.openweathermap.org/data/2.5/weather`,
       {
         params: {
-          lat,
-          lon,
+          lat: req.query.lat,
+          lon: req.query.lon,
           appid: API_KEY,
           units: "metric",
         },
       }
     );
+
+    if (response.status !== 200) {
+      throw new Error(`API error: ${response.status}`);
+    }
 
     const data = response.data;
 
